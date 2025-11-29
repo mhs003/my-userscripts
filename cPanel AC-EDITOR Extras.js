@@ -4,7 +4,7 @@
 // @version      2025-07-22
 // @description  try to take over the world!
 // @author       You
-// @match        https://alhadiexpress.com.bd:2083/cpsess*/frontend/jupiter/filemanager/editit.html*
+// @match        https://domain.com:2083/cpsess*/frontend/jupiter/filemanager/editit.html*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=com.bd
 // @require      https://gist.githubusercontent.com/mhs003/b62b57463ce0f67b0c24d11a7e943745/raw/5bdb7e761e251816294e6143cc87f01e45802148/handle_key.js
 // @grant        none
