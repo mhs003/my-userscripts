@@ -20,13 +20,9 @@
     let loginInterval = null;
 
     loginInterval = setInterval(() => {
-        if(SC('[name="pma_username"]')) {
-            SC('[name="pma_username"]').value = 'root';
-        }
+        SC('[name="pma_username"]')?.value = 'root';
 
-        if(SC('[name="pma_password"]')) {
-            SC('[name="pma_password"]').value = '1234';
-        }
+        SC('[name="pma_password"]')?.value = '1234';
 
         if(SC('[value="Log in"]')) {
             SC('[value="Log in"]').click();
