@@ -12,6 +12,6 @@
 (function() {
     'use strict';
 
-    document.querySelector('a[href="/product-key-form"]').closest('div').remove();
+    document.querySelector('a[href="/product-key-form"]')?.closest('div').remove();
 
 })();
