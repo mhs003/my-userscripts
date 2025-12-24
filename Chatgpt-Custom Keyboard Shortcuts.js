@@ -19,9 +19,19 @@
         document.querySelector('[aria-label="Turn off temporary chat"]')?.click();
     });
 
+    handleKey('Escape', document, () => {
+        document.querySelector('[aria-label="Close"]')?.click();
+        document.querySelector('[class="text-token-text-secondary hover:text-token-text-primary p-3"]')?.click();
+        document.querySelector('[aria-label="Dismiss upgrade reminder"]')?.click();
+    });
+
     // delete current conversation
     handleKey("Ctrl+d", document, (e) => {
         e.preventDefault();
+        deleteCurrentConversation();
+    });
+
+    function deleteCurrentConversation(after = null) {
         console.log('deleting conversation...');
         const menuButton = document.querySelector('[data-active] .trailing-pair button');
 
@@ -44,16 +54,14 @@
                         if(confirmButton) {
                             clearInterval(y);
                             confirmButton.click();
+                            if(typeof after === 'function') {
+                                after();
+                            }
                         }
                     }, 50);
                 }
             }, 50);
         }
-    });
-
-    handleKey('Escape', document, () => {
-        document.querySelector('[aria-label="Close"]')?.click();
-        document.querySelector('[class="text-token-text-secondary hover:text-token-text-primary p-3"]')?.click();
-    });
+    }
 
 })();
