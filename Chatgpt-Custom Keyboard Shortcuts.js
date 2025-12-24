@@ -51,4 +51,9 @@
         }
     });
 
+    handleKey('Escape', document, () => {
+        document.querySelector('[aria-label="Close"]')?.click();
+        document.querySelector('[class="text-token-text-secondary hover:text-token-text-primary p-3"]')?.click();
+    });
+
 })();
