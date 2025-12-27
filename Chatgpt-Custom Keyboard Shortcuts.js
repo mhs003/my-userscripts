@@ -31,37 +31,36 @@
         deleteCurrentConversation();
     });
 
-    function deleteCurrentConversation(after = null) {
-        console.log('deleting conversation...');
-        const menuButton = document.querySelector('[data-active] .trailing-pair button');
+	async function deleteCurrentConversation(after = null) {
+		const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-        if (menuButton) {
-            menuButton.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, cancelable: true }));
-            menuButton.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, cancelable: true }));
+		async function waitFor(selector, timeout = 2000) {
+			const start = Date.now();
+			while (Date.now() - start < timeout) {
+				const el = document.querySelector(selector);
+				if (el) return el;
+				await sleep(50);
+			}
+			return null;
+		}
 
-            let deleteItem, confirmButton;
+		const menuButton = document.querySelector("[data-active] .trailing-pair button");
+		if (!menuButton) return;
 
-            let x = setInterval(() => {
-                deleteItem = document.querySelector('[data-testid="delete-chat-menu-item"]');
-                console.log('searching for deleteItem', deleteItem);
-                if (deleteItem) {
-                    clearInterval(x);
-                    deleteItem.click();
+		menuButton.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
+		menuButton.dispatchEvent(new PointerEvent("pointerup", { bubbles: true }));
 
-                    let y = setInterval(() => {
-                        confirmButton = document.querySelector('[data-testid="delete-conversation-confirm-button"]');
-                        console.log('searching for confirmButton', confirmButton);
-                        if(confirmButton) {
-                            clearInterval(y);
-                            confirmButton.click();
-                            if(typeof after === 'function') {
-                                after();
-                            }
-                        }
-                    }, 50);
-                }
-            }, 50);
-        }
-    }
+		const deleteBtn = (await waitFor('[data-testid="delete-chat-menu-item"]')) || (await waitFor('[data-color="danger"]'));
+
+		if (!deleteBtn) return;
+		deleteBtn.click();
+
+		const confirmBtn = (await waitFor('[data-testid="delete-conversation-confirm-button"]')) || (await waitFor('[data-testid="delete-group-chat-confirm-button"]'));
+
+		if (!confirmBtn) return;
+		confirmBtn.click();
+
+		if (typeof after === "function") after();
+	}
 
 })();
