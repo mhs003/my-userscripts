@@ -34,11 +34,21 @@
 	async function deleteCurrentConversation(after = null) {
 		const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-		async function waitFor(selector, timeout = 2000) {
+        let last_skip_group = 0;
+
+		async function waitFor(selector, timeout = 2000, group=1) {
 			const start = Date.now();
 			while (Date.now() - start < timeout) {
+                if(last_skip_group === group) {
+                    break;
+                }
+                //console.log('Searching for selector', selector);
 				const el = document.querySelector(selector);
-				if (el) return el;
+				if (el) {
+                    //console.log('found>', el);
+                    last_skip_group = group;
+                    return el;
+                }
 				await sleep(50);
 			}
 			return null;
@@ -50,15 +60,25 @@
 		menuButton.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
 		menuButton.dispatchEvent(new PointerEvent("pointerup", { bubbles: true }));
 
-		const deleteBtn = (await waitFor('[data-testid="delete-chat-menu-item"]')) || (await waitFor('[data-color="danger"]'));
+		const [deleteBtn, groupDeleteBtn] = await Promise.all([
+            waitFor('[data-testid="delete-chat-menu-item"]', 2000, 1),
+            waitFor('[data-color="danger"]', 2000, 1)
+        ]);
 
-		if (!deleteBtn) return;
-		deleteBtn.click();
+        const targetDeleteBtn = deleteBtn || groupDeleteBtn;
+        if (!targetDeleteBtn) return;
 
-		const confirmBtn = (await waitFor('[data-testid="delete-conversation-confirm-button"]')) || (await waitFor('[data-testid="delete-group-chat-confirm-button"]'));
+		targetDeleteBtn.click();
 
-		if (!confirmBtn) return;
-		confirmBtn.click();
+		const [confirmBtn, groupConfirmBtn] = await Promise.all([
+            waitFor('[data-testid="delete-conversation-confirm-button"]', 2000, 2),
+            waitFor('[data-testid="delete-group-chat-confirm-button"]', 2000, 2)
+        ]);
+
+        const targetConfirmBtn = confirmBtn || groupConfirmBtn;
+        if (!targetConfirmBtn) return;
+
+        targetConfirmBtn.click();
 
 		if (typeof after === "function") after();
 	}
