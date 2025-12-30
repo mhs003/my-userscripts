@@ -31,6 +31,12 @@
         deleteCurrentConversation();
     });
 
+    // open new chat in new tab
+    handleKey("Ctrl+o", document, (e) => {
+        e.preventDefault();
+        window.open(location.origin, '_blank');
+    });
+
 	async function deleteCurrentConversation(after = null) {
 		const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
