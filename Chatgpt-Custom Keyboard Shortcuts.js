@@ -60,7 +60,7 @@
 			return null;
 		}
 
-		const menuButton = document.querySelector("[data-active] .trailing-pair button");
+		const menuButton = document.querySelector('#conversation-header-actions button[data-testid="conversation-options-button"]');
 		if (!menuButton) return;
 
 		menuButton.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
@@ -68,7 +68,7 @@
 
 		const [deleteBtn, groupDeleteBtn] = await Promise.all([
             waitFor('[data-testid="delete-chat-menu-item"]', 2000, 1),
-            waitFor('[data-color="danger"]', 2000, 1)
+            waitFor('[data-testid="delete-conversation-confirm-button"]', 2000, 1)
         ]);
 
         const targetDeleteBtn = deleteBtn || groupDeleteBtn;
