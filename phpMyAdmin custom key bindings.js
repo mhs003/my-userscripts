@@ -1,0 +1,49 @@
+// ==UserScript==
+// @name         phpMyAdmin custom key bindings
+// @namespace    http://tampermonkey.net/
+// @version      2026-04-16
+// @description  try to take over the world!
+// @author       mhs003
+// @match        http://localhost:8089/*
+// @require      https://gist.githubusercontent.com/mhs003/b62b57463ce0f67b0c24d11a7e943745/raw/5bdb7e761e251816294e6143cc87f01e45802148/handle_key.js
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=undefined.localhost
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    handleKey("Ctrl+r", document, (e) => {
+        const nodes = document.querySelector('.tools.d-print-none').childNodes;
+        if(nodes[nodes.length-2]?.textContent === 'Refresh') {
+            e.preventDefault();
+            nodes[nodes.length-2].click();
+        }
+    });
+
+    handleKey("Ctrl+/", document, (e) => {
+        e.preventDefault();
+        const filterText = document.querySelector('#filterText');
+        const sclause2 = document.querySelector('[name="searchClause2"]');
+        const tsearchi = document.querySelector('[placeholder="Search this table"]');
+        const currentFocused = document.activeElement;
+
+        if(filterText && currentFocused != filterText) {
+            filterText.focus();
+        } else if(sclause2 && currentFocused != sclause2) {
+            sclause2.focus();
+        } else if(tsearchi && currentFocused != tsearchi) {
+            tsearchi.focus();
+        }
+    });
+
+
+    handleKey('Ctrl+e', document, (e) => {
+        const el = document.querySelector('.inline_edit_sql');
+        if(el){
+            e.preventDefault();
+            el.click();
+        }
+    })
+
+})();
