@@ -13,6 +13,8 @@
 (function() {
     'use strict';
 
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
     handleKey("Ctrl+r", document, (e) => {
         const nodes = document.querySelector('.tools.d-print-none')?.childNodes;
         const activeMenu = document.querySelector('#topmenu')?.getElementsByClassName('active')[0]?.firstElementChild;
@@ -57,6 +59,43 @@
             e.preventDefault();
             consoleToggleBtn.click();
         }
+    });
+
+
+    handleKey('Alt+p', document, (e) => {
+        const profilingCheckbox = document.querySelector('#profilingCheckbox');
+        if(!profilingCheckbox) return;
+        e.preventDefault();
+        profilingCheckbox.closest('form').classList.remove('disableAjax');
+        profilingCheckbox.click();
+    });
+
+
+    handleKey('Ctrl+a', document, async (e) => {
+        const elm = document.querySelector('.showAllRows');
+        if(!elm) return;
+        if(['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+            if(document.activeElement.attributes.class.value === 'multi_checkbox checkall') {
+                e.preventDefault();
+                let allChecked = true;
+                document.querySelectorAll('.multi_checkbox.checkall').forEach(function(X) {
+                    if(!X.checked) {
+                        allChecked = false;
+                        X.click();
+                    }
+                });
+                if(allChecked) {
+                    document.querySelector('.checkall_box').click();
+                }
+                return;
+            } else if(!['checkbox', 'radio'].includes(document.activeElement.attributes?.type?.value)) {
+                return;
+            }
+        }
+        e.preventDefault();
+        elm.click();
+        await sleep(10);
+        document.querySelector('.submitOK')?.click();
     });
 
 })();
