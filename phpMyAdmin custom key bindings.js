@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         phpMyAdmin custom key bindings
 // @namespace    http://tampermonkey.net/
-// @version      2026-04-16
+// @version      2026-04-19
 // @description  try to take over the world!
 // @author       mhs003
 // @match        http://localhost:8089/*
@@ -14,10 +14,15 @@
     'use strict';
 
     handleKey("Ctrl+r", document, (e) => {
-        const nodes = document.querySelector('.tools.d-print-none').childNodes;
-        if(nodes[nodes.length-2]?.textContent === 'Refresh') {
+        const nodes = document.querySelector('.tools.d-print-none')?.childNodes;
+        const activeMenu = document.querySelector('#topmenu')?.getElementsByClassName('active')[0]?.firstElementChild;
+        if(nodes && nodes[nodes.length-2]?.textContent === 'Refresh') {
             e.preventDefault();
             nodes[nodes.length-2].click();
+        } else if (activeMenu) {
+            e.preventDefault();
+            activeMenu.classList.remove('disableAjax');
+            activeMenu.click();
         }
     });
 
