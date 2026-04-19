@@ -51,4 +51,12 @@
         }
     })
 
+    handleKey('Ctrl+j', document, (e) => {
+        const consoleToggleBtn = document.querySelector('.switch_button.console_switch');
+        if(consoleToggleBtn) {
+            e.preventDefault();
+            consoleToggleBtn.click();
+        }
+    });
+
 })();
