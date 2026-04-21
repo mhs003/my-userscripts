@@ -72,9 +72,7 @@
 
 
     handleKey('Ctrl+a', document, async (e) => {
-        const elm = document.querySelector('.showAllRows');
-        if(!elm) return;
-        if(['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+        if(['INPUT'].includes(document.activeElement.tagName)) {
             if(document.activeElement.attributes.class.value === 'multi_checkbox checkall') {
                 e.preventDefault();
                 let allChecked = true;
@@ -87,11 +85,13 @@
                 if(allChecked) {
                     document.querySelector('.checkall_box').click();
                 }
-                return;
-            } else if(!['checkbox', 'radio'].includes(document.activeElement.attributes?.type?.value)) {
-                return;
             }
         }
+    });
+
+    handleKey('Ctrl+Alt+a', document, async (e) => {
+        const elm = document.querySelector('.showAllRows');
+        if(!elm) return;
         e.preventDefault();
         elm.click();
         await sleep(10);
