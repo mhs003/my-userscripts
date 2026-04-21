@@ -28,6 +28,48 @@
         }
     });
 
+    handleKey("Alt+t", document, (e) => {
+        e.preventDefault();
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        });
+    });
+    handleKey("Alt+b", document, (e) => {
+        e.preventDefault();
+        window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            left: document.documentElement.scrollWidth,
+            behavior: 'smooth'
+        });
+    });
+
+    handleKey("Ctrl+Alt+ArrowLeft", document, () => {
+       window.scrollTo({
+           left: 0,
+           behavior: 'smooth'
+       });
+    });
+    handleKey("Ctrl+Alt+ArrowRight", document, () => {
+       window.scrollTo({
+           left: document.documentElement.scrollWidth,
+           behavior: 'smooth'
+       });
+    });
+    handleKey("Ctrl+Alt+ArrowUp", document, () => {
+       window.scrollTo({
+           top: 0,
+           behavior: 'smooth'
+       });
+    });
+    handleKey("Ctrl+Alt+ArrowDown", document, () => {
+       window.scrollTo({
+           top: document.documentElement.scrollHeight,
+           behavior: 'smooth'
+       });
+    });
+
     handleKey("Ctrl+/", document, (e) => {
         e.preventDefault();
         const filterText = document.querySelector('#filterText');
