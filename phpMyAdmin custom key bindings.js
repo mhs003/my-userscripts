@@ -69,6 +69,20 @@
            behavior: 'smooth'
        });
     });
+    handleKey("Shift+ArrowRight", document, () => {
+        if(['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+        window.scrollTo({
+            left: window.pageXOffset + 500,
+            behavior: 'smooth'
+        });
+    });
+    handleKey("Shift+ArrowLeft", document, () => {
+        if(['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+        window.scrollTo({
+            left: window.pageXOffset - 500,
+            behavior: 'smooth'
+        });
+    });
 
     handleKey("Ctrl+/", document, (e) => {
         e.preventDefault();
@@ -134,10 +148,18 @@
     handleKey('Ctrl+Alt+a', document, async (e) => {
         const elm = document.querySelector('.showAllRows');
         if(!elm) return;
+        const shouldskiploop = elm.checked;
         e.preventDefault();
         elm.click();
-        await sleep(10);
-        document.querySelector('.submitOK')?.click();
+        if(shouldskiploop) return;
+        //await sleep(10);
+        //document.querySelector('.submitOK')?.click();
+        let found = false;
+        do {
+            console.log('iterated');
+            found = document.querySelector('.submitOK');
+            if(found) found.click();
+        } while(!found);
     });
 
 })();
